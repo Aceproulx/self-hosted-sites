@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Self Hosted BugBounty Programs</title>
+<meta name="theme-color" content="#14202A">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1>Self Hosted BugBounty Programs</h1>
+  <div class="bar">
+    <div class="seg" id="src" aria-label="Source"></div>
+    <div class="seg" id="st" aria-label="Status"></div>
+    <input id="q" type="search" placeholder="Search URL or description" aria-label="Search">
+    <button id="shuf" class="btn">Shuffle</button>
+    <button id="copy-all-agent" class="btn" title="Copy current targets for AI Agent">Copy to Agent</button>
+    <details class="menu"><summary class="btn ghost">Data</summary>
+      <div>
+        <label><input type="checkbox" id="pin"> Pin favourites first</label>
+        <button id="exp">Export data (favourites, hidden, checked)</button>
+        <label class="lbtn">Import file<input type="file" id="imp" accept=".json" hidden></label>
+        <button id="clr">Re-check framing</button>
+        <button id="rst-seen">Reset checked history</button>
+      </div>
+    </details>
+  </div>
+</header>
+<main>
+  <p id="count" class="mute"></p>
+  <section id="grid" class="grid"></section>
+  <div id="more"></div>
+  <p id="empty" hidden>Nothing here. Change the filters, or add rows to the CSV files.</p>
+</main>
+<div id="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>
