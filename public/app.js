@@ -257,7 +257,50 @@ $('#exp').onclick = () => { const a = document.createElement('a'); a.href = URL.
 $('#imp').onchange = async e => { try { const j = JSON.parse(await e.target.files[0].text()); ['fav', 'hide', 'seen'].forEach(k => Object.assign(S[k], j[k] || {})); save(); apply(); toast('Imported.'); } catch { toast('That file could not be read.'); } };
 $('#clr').onclick = () => { F = {}; saveF(); apply(); toast('Framing checks cleared.'); };
 const rstBtn = $('#rst-seen');
-if (rstBtn) rstBtn.onclick = () => { S.seen = {}; save(); apply(); toast('Checked history reset.'); };
+// Auto-hiding header (Headroom pattern)
+(() => {
+  const topEl = $('.top');
+  if (!topEl) return;
+  let lastY = window.scrollY, isHidden = false;
+  const THRESHOLD = 8, MIN_SCROLL = 50;
+
+  function onScroll() {
+    const y = Math.max(0, window.scrollY);
+    if (y <= 15) {
+      if (isHidden) { topEl.classList.remove('nav-hidden'); isHidden = false; }
+      topEl.classList.remove('nav-scrolled');
+      lastY = y;
+      return;
+    }
+    topEl.classList.add('nav-scrolled');
+    if (document.activeElement && topEl.contains(document.activeElement) && document.activeElement.tagName === 'INPUT') {
+      lastY = y;
+      return;
+    }
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (y >= maxScroll - 5) return;
+
+    const diff = y - lastY;
+    if (diff > THRESHOLD && y > MIN_SCROLL) {
+      if (!isHidden) {
+        topEl.classList.add('nav-hidden');
+        isHidden = true;
+        const m = topEl.querySelector('.menu[open]');
+        if (m) m.removeAttribute('open');
+      }
+      lastY = y;
+    } else if (diff < -THRESHOLD) {
+      if (isHidden) {
+        topEl.classList.remove('nav-hidden');
+        isHidden = false;
+      }
+      lastY = y;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
 sentinel.observe($('#more'));
 boot();
 })();
